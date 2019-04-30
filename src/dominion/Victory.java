@@ -25,3 +25,4 @@ public abstract class Victory implements Card {
 		return "(V) " + this.getName();
 	}
 }
+

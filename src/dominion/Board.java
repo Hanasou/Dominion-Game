@@ -75,3 +75,4 @@ public class Board extends JFrame{
 		}
 	}
 }
+

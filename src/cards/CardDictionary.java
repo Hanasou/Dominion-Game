@@ -19,3 +19,4 @@ public class CardDictionary extends HashMap<String, Card> {
 		put("Province", new Province());
 	}
 }
+

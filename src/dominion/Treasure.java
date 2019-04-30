@@ -34,3 +34,4 @@ public abstract class Treasure implements Card {
 		return this.toString().equals(o.toString());
 	}
 }
+

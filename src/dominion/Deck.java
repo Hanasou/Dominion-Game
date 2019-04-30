@@ -24,3 +24,4 @@ public class Deck extends ArrayList<Card>{
 		Collections.shuffle(this);
 	}
 }
+

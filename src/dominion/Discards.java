@@ -17,3 +17,4 @@ public class Discards extends ArrayList<Card>{
 		this.removeAll(this);
 	}
 }
+

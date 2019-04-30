@@ -29,3 +29,4 @@ public class Estate extends Victory{
 		return new ImageIcon("card_img/estate.png");
 	}
 }
+
