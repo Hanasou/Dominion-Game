@@ -8,4 +8,7 @@ public class Hand extends ArrayList<Card>{
 		
 	}
 	
+	public void empty() {
+		this.removeAll(this);
+	}
 }

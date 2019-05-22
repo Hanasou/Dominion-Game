@@ -7,6 +7,7 @@ public class Player {
 	 * Attributes the player has. 
 	 * TODO: Hand, Deck, Discard pile, other stuff I might be missing
 	 */
+	private String name;
 	private int actions;
 	private int money;
 	private int victory;
@@ -19,7 +20,8 @@ public class Player {
 	private ArrayList<Card> inPlay;
 	private PlayArea playArea;
 	
-	public Player() {
+	public Player(String name) {
+		this.name = name;
 		this.actions = 1;
 		this.money = 0;
 		this.victory = 0;
@@ -30,10 +32,15 @@ public class Player {
 		this.deck = new Deck();
 		this.discards = new Discards();
 		this.inPlay = new ArrayList<Card>();
-		this.playArea = new PlayArea();
+		this.playArea = new PlayArea(name);
 		
 		drawHand();
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	public boolean activeTurn() {
 		return activeTurn;
 	}
@@ -86,19 +93,23 @@ public class Player {
 		this.victory = v;
 	}
 	
-	public void setTurnActive() {
-		this.activeTurn = true;
+	public void setActiveTurn(boolean b) {
+		this.activeTurn = b;
+		this.playArea.setTurn(b);
 	}
 	
-	public void endTurn() {
-		this.activeTurn = false;
-	}
 	/**
 	 * Whenever the turn gets swapped, call this method.
 	 */
 	public void resetTurn() {
 		this.actions = 1;
 		this.money = 0;
+		discards.addAll(hand);
+		for (Card c : hand) {
+			playArea.addDiscard(c);
+		}
+		hand.empty();
+		playArea.emptyHand();
 		drawHand();
 		activeTurn = true;
 		actionPhase = true;
@@ -117,6 +128,7 @@ public class Player {
 	public void reshuffle() {
 		deck.addAll(discards);
 		discards.empty();
+		playArea.emptyDiscard();
 		deck.shuffle();
 	}
 	

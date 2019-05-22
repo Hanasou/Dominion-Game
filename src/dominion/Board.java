@@ -12,13 +12,16 @@ public class Board extends JFrame{
 	private ArrayList<Stack<Card>> kingdom;
 	private ArrayList<Card> trash;
 	private CardDictionary dict;
+	private Player currPlayer;
 	
 	public Board(ArrayList<Player> players, ArrayList<Card> cardList) {
 		this.trash = new ArrayList<Card>();
 		this.kingdom = new ArrayList<Stack<Card>>();
 		this.dict = new CardDictionary();
 		this.tv = new ArrayList<Stack<Card>>();
+		this.currPlayer = players.get(0);
 		
+		currPlayer.setActiveTurn(true);
 		//Initialize stacks of cards
 		for (int i = 0; i < 7; i++) {
 			tv.add(new Stack<Card>());
@@ -33,6 +36,8 @@ public class Board extends JFrame{
 		for (int i = 0; i < 50; i++) {
 			tv.get(2).push(new Gold());
 		}
+		
+		//Set the frame to border layout
 		setLayout(new BorderLayout());
 		JPanel cardPanel = new JPanel(new BorderLayout());
 		JPanel tvPanel = new JPanel(new FlowLayout());
@@ -57,21 +62,32 @@ public class Board extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		
+		//Rotate player's turns here. Add player's boards.
 		int i = 0;
+		currPlayer = players.get(i);
+		add(currPlayer.getArea(), BorderLayout.CENTER);
+		pack();
 		while (true) {
-			Player currPlayer = players.get(i);
-			currPlayer.setTurnActive();
-			add(currPlayer.getArea(), BorderLayout.CENTER);
-			pack();
 			while (currPlayer.activeTurn()) {
-				
+				System.out.println(currPlayer.getArea().getPlayerName());
+				;
+				if (currPlayer.getArea().getTurn() == false) {
+					currPlayer.setActiveTurn(false);
+					break;
+				}
+				;
 			}
+			//remove(currPlayer.getArea());
 			remove(currPlayer.getArea());
 			i++;
 			if (i == players.size()) {
 				i = 0;
 			}
+			currPlayer = players.get(i);
+			add(currPlayer.getArea(), BorderLayout.CENTER);
+			currPlayer.setActiveTurn(true);
+			currPlayer.resetTurn();
+			pack();
 		}
 	}
 }
