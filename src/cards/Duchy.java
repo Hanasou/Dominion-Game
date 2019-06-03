@@ -20,6 +20,10 @@ public class Duchy extends Victory{
 		return 5;
 	}
 	
+	public int getPoints() {
+		return 3;
+	}
+	
 	public void countPoints(Player player) {
 		player.setVictory(player.getVictory() + 3);
 	}

@@ -18,7 +18,6 @@ public class GameTester {
 		//Add kingdom cards we're playing with here
 		ArrayList<Card> cardList = new ArrayList<Card>();
 		Board board = new Board(players, cardList);
-		
 		/*
 		JFrame frame = new JFrame();
 		frame.setLayout(new FlowLayout());

@@ -8,33 +8,55 @@ import cards.*;
 public class Board extends JFrame{
 
 	private ArrayList<Player> players;
+	//private Player currPlayer;
 	private ArrayList<Stack<Card>> tv;
 	private ArrayList<Stack<Card>> kingdom;
 	private ArrayList<Card> trash;
 	private CardDictionary dict;
-	private Player currPlayer;
+	private PlayArea playArea;
+	
 	
 	public Board(ArrayList<Player> players, ArrayList<Card> cardList) {
 		this.trash = new ArrayList<Card>();
 		this.kingdom = new ArrayList<Stack<Card>>();
 		this.dict = new CardDictionary();
 		this.tv = new ArrayList<Stack<Card>>();
-		this.currPlayer = players.get(0);
+		this.playArea = new PlayArea(players);
+		//this.currPlayer = players.get(0);
 		
-		currPlayer.setActiveTurn(true);
+		//currPlayer.setActiveTurn(true);
 		//Initialize stacks of cards
 		for (int i = 0; i < 7; i++) {
 			tv.add(new Stack<Card>());
 		}
+		
+		//Label the stacks as variables
+		Stack<Card> copperStack = tv.get(0);
+		Stack<Card> silverStack = tv.get(1);
+		Stack<Card> goldStack = tv.get(2);
+		Stack<Card> estateStack = tv.get(3);
+		Stack<Card> duchyStack = tv.get(4);
+		Stack<Card> provinceStack = tv.get(5);
+		Stack<Card> curseStack = tv.get(6);
+		
 		//Add all the treasure and victory cards into the stacks.
 		for (int i = 0; i < 50; i++) {
-			tv.get(0).push(new Copper());
+			copperStack.push(new Copper());
 		}
 		for (int i = 0; i < 50; i++) {
-			tv.get(1).push(new Silver());
+			silverStack.push(new Silver());
 		}
 		for (int i = 0; i < 50; i++) {
-			tv.get(2).push(new Gold());
+			goldStack.push(new Gold());
+		}
+		for (int i = 0; i < 8; i++) {
+			estateStack.push(new Estate());
+		}
+		for (int i = 0; i < 8; i++) {
+			duchyStack.push(new Duchy());
+		}
+		for (int i = 0; i < 8; i++) {
+			provinceStack.push(new Province());
 		}
 		
 		//Set the frame to border layout
@@ -62,20 +84,23 @@ public class Board extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
+		add(playArea, BorderLayout.CENTER);
+		pack();
 		//Rotate player's turns here. Add player's boards.
+		/*
 		int i = 0;
 		currPlayer = players.get(i);
-		add(currPlayer.getArea(), BorderLayout.CENTER);
+		add(playArea, BorderLayout.CENTER);
 		pack();
+		*/
+		/*
 		while (true) {
 			while (currPlayer.activeTurn()) {
-				System.out.println(currPlayer.getArea().getPlayerName());
-				;
+				Thread.yield();
 				if (currPlayer.getArea().getTurn() == false) {
 					currPlayer.setActiveTurn(false);
 					break;
 				}
-				;
 			}
 			//remove(currPlayer.getArea());
 			remove(currPlayer.getArea());
@@ -89,6 +114,7 @@ public class Board extends JFrame{
 			currPlayer.resetTurn();
 			pack();
 		}
+		*/
 	}
 }
 

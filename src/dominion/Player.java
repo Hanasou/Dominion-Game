@@ -18,7 +18,6 @@ public class Player {
 	private boolean actionPhase;
 	private boolean activeTurn;
 	private ArrayList<Card> inPlay;
-	private PlayArea playArea;
 	
 	public Player(String name) {
 		this.name = name;
@@ -26,17 +25,19 @@ public class Player {
 		this.money = 0;
 		this.victory = 0;
 		this.buys = 1;
-		this.actionPhase = false;
+		this.actionPhase = true;
 		this.activeTurn = false;
 		this.hand = new Hand();
 		this.deck = new Deck();
 		this.discards = new Discards();
 		this.inPlay = new ArrayList<Card>();
-		this.playArea = new PlayArea(name);
 		
 		drawHand();
 	}
 	
+	public boolean getActionPhase() {
+		return actionPhase;
+	}
 	public String getName() {
 		return name;
 	}
@@ -73,10 +74,6 @@ public class Player {
 		return discards;
 	}
 	
-	public PlayArea getArea() {
-		return playArea;
-	}
-	
 	public ArrayList<Card> getInPlay() {
 		return inPlay;
 	}
@@ -95,7 +92,6 @@ public class Player {
 	
 	public void setActiveTurn(boolean b) {
 		this.activeTurn = b;
-		this.playArea.setTurn(b);
 	}
 	
 	/**
@@ -103,13 +99,13 @@ public class Player {
 	 */
 	public void resetTurn() {
 		this.actions = 1;
+		this.buys = 1;
 		this.money = 0;
+		
 		discards.addAll(hand);
-		for (Card c : hand) {
-			playArea.addDiscard(c);
-		}
+		discards.addAll(inPlay);
 		hand.empty();
-		playArea.emptyHand();
+		inPlay.removeAll(inPlay);
 		drawHand();
 		activeTurn = true;
 		actionPhase = true;
@@ -128,14 +124,12 @@ public class Player {
 	public void reshuffle() {
 		deck.addAll(discards);
 		discards.empty();
-		playArea.emptyDiscard();
 		deck.shuffle();
 	}
 	
 	public void draw() {
 		Card drawThis = deck.pop();
 		hand.add(drawThis);
-		playArea.addHand(drawThis);
 		if (deck.isEmpty()) {
 			reshuffle();
 		}
@@ -148,38 +142,60 @@ public class Player {
 	}
 	
 	public void play(Card c) {
-		hand.remove(c);
 		if (c instanceof Action) {
 			if (actions == 0) {
 				System.out.println("No actions left");
 			}
-			else if (actionPhase = false) {
-				System.out.println("Rip you");
+			else if (actionPhase == false) {
+				System.out.println("Not Action Phase");
 			}
 			else {
 				actions--;
 				c.activate(this);
-				playArea.setActions(actions);
+				hand.remove(c);
+				inPlay.add(c);
 			}
 		}
 		else if (c instanceof Treasure) {
-			
-			if (actionPhase = true) {
+			if (actionPhase == true) {
 				System.out.println("Can't play treasure on action phase");
 			}
 			else {
+				hand.remove(c);
 				c.activate(this);
-				playArea.setMoney(money);
+				inPlay.add(c);
 			}
 		}
-		inPlay.add(c);
+		else {
+			System.out.println("Select Something Valid");
+		}
+	}
+	
+	public void playTreasures() {
+		ArrayList<Card> playThese = new ArrayList<Card>();
+		for (Card c : getHand()) {
+			if (c instanceof Treasure) {
+				playThese.add(c);
+			}
+		}
+		
+		for (Card c : playThese) {
+			play(c);
+		}
 	}
 	
 	/**
 	 * Buy a card
 	 */
 	public void buy(Card c) {
-		
+		if (money >= c.getCost()) {
+			money = money - c.getCost();
+			discards.add(c);
+		}
+		else {
+			System.out.println("Can't Afford");
+		}
+		//discards.add(c);
 	}
 	/**
 	 * Call this after you end your turn.

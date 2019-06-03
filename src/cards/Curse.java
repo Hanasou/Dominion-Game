@@ -6,29 +6,31 @@ import javax.swing.ImageIcon;
 
 import dominion.Player;
 
-public class Province extends Victory{
+public class Curse extends Victory{
 
-	public Province() {
+	public Curse() {
 		
 	}
 	
 	public String getName() {
-		return "Province";
+		return "Curse";
 	}
 	
 	public int getCost() {
-		return 8;
+		return 0;
 	}
 	
 	public int getPoints() {
-		return 6;
+		return -1;
 	}
 	
 	public void countPoints(Player player) {
-		player.setVictory(player.getVictory() + 6);
+		player.setVictory(player.getVictory() - 1);
 	}
 	
+	
 	public ImageIcon getImageIcon() {
-		return new ImageIcon("card_img/province.png");
+		return new ImageIcon("card_img/estate.png");
 	}
 }
+

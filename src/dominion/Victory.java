@@ -4,7 +4,6 @@ import javax.swing.ImageIcon;
 
 public abstract class Victory implements Card {
 
-	
 	public Victory() {
 		
 	}
@@ -13,9 +12,14 @@ public abstract class Victory implements Card {
 		return "Victory";
 	}
 	
+	public int getPoints() {
+		return 0;
+	}
+	
 	public int getCost() {
 		return 0;
 	}
+	
 	
 	public void activate(Player player) {
 		

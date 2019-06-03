@@ -20,6 +20,10 @@ public class Estate extends Victory{
 		return 2;
 	}
 	
+	public int getPoints() {
+		return 1;
+	}
+	
 	public void countPoints(Player player) {
 		player.setVictory(player.getVictory() + 1);
 	}
